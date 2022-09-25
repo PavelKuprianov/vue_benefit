@@ -1,24 +1,24 @@
 <template>
   <div id="app">
     <h1>Давайте выберем, что выгоднее</h1>
-    <form class="form" @submit.prevent="submit">
+    <form class="form">
       <h2>Первый товар</h2>
       <div class="product__input">
-        <input class="product__inut_inp" type="text" placeholder="Стоимость первого товара" v-model.number="price1" required>
-        <input class="product__inut_inp" type="text" placeholder="Количество (объём) товара" v-model.number="quantity1" required>
+        <input @blur="validator(price1)" class="product__inut_inp" type="text" placeholder="Стоимость первого товара" v-model.number="price1" required>
+        <input @blur="validator(quantity1)" class="product__inut_inp" type="text" placeholder="Количество (объём) товара" v-model.number="quantity1" required>
       </div>
 
       <hr>
       <h2>Второй товар</h2>
       <div class="product__input">
-        <input class="product__inut_inp" type="text" placeholder="Стоимость второго товара" v-model.number="price2" required>
-        <input class="product__inut_inp" type="text" placeholder="Количество (объём) товара" v-model.number="quantity2" required>
+        <input @blur="validator(price2)" class="product__inut_inp" type="text" placeholder="Стоимость второго товара" v-model.number="price2" required>
+        <input @blur="validator(quantity2)" class="product__inut_inp" type="text" placeholder="Количество (объём) товара" v-model.number="quantity2" required>
       </div>
-      <button type="submit" >Посчитать</button>
+      <button type="button" @click.prevent="calculate">Посчитать</button>
     </form>
 
     <div class="result">
-      <p>{{submit()}}</p>
+      <p>{{result}}</p>
     </div>
   </div>
 </template>
@@ -33,14 +33,22 @@ export default {
       quantity1: '',
       price2: '',
       quantity2: '',
+      result: '',
     };
   },
   components: {
   },
   methods: {
-    submit() {
-      if(this.price1 && this.price2) {
-        return this.price1 + this.price2;
+    validator(value) {
+      if(typeof value !== 'number') {
+        this.value = ""
+        alert('Вы ввели некорректное значение!')
+      }
+
+    },
+    calculate() {
+      if(this.price1 && this.quantity1 && this.price2 && this.quantity2) {
+        this.result = this.price1 + this.price2;
       }
       
     }
